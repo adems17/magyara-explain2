@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <title>Magyarázd el egyszerűen - Teszt proxy-val</title>
+</head>
+<body>
+  <h1>Magyarázd el egyszerűen (teszt proxy-val)</h1>
+  <textarea id="input" rows="4" cols="50" placeholder="Írj be valamit..."></textarea><br />
+  <button onclick="sendRequest()">Magyarázd el!</button>
+  <pre id="output"></pre>
+
+  <script>
+    async function sendRequest() {
+      const input = document.getElementById('input').value;
+
+      const response = await fetch('/.netlify/functions/openai-proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt: input })
+      });
+
+      const data = await response.json();
+      document.getElementById('output').textContent = data.result || "Nem jött válasz.";
+    }
+  </script>
+</body>
+</html>
